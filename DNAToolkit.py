@@ -1,7 +1,8 @@
 # DNA Toolkit file
 import collections
+from structures import *
 
-Nucleotides = ["A", "C", "G", "T"]
+
 
 # Check the sequence to make sure it is a DNA string
 def validateSeq(dna_seq):
@@ -18,3 +19,9 @@ def countNucFrequency(seq):
     return tmpFreqDict
     # return dict(collections.Counter(seq))
 
+def transcription(seq):
+    # DNA -> RNA transcription
+    return seq.replace("T", "U")
+
+def reverse_complement(seq):
+    return ''.join([DNA_ReverseComplement[nuc] for nuc in seq])[::-1]
