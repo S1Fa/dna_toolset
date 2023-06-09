@@ -9,12 +9,12 @@ def colored(seq):
         "reset": "\033[0;0m"
     }
 
-    tmpStr = "" 
+    tmpStr = ""
 
     for nuc in seq:
         if nuc in bcolors:
             tmpStr += bcolors[nuc] + nuc
         else:
             tmpStr += bcolors['reset'] + nuc
-    
+
     return tmpStr + '\033[0;0m'
