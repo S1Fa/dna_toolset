@@ -1,6 +1,6 @@
 # DNA Toolkit file
-import collections
-from structures import DNA_ReverseComplement, Nucleotides
+from collections import Counter
+from structures import *
 
 def validateSeq(dna_seq):
     """Check the sequence to make sure it is a DNA string"""
@@ -15,7 +15,7 @@ def countNucFrequency(seq):
     for nuc in seq:
         tmpFreqDict[nuc] += 1
     return tmpFreqDict
-    # return dict(collections.Counter(seq))
+    # return dict(Counter(seq))
 
 def transcription(seq):
     """DNA -> RNA transcription. Replacng Thymine with Uracil"""
@@ -41,3 +41,31 @@ def gc_content_subsec(seq, k=20):
         res.append(gc_content(seq[i: i+k]))
     
     return res
+
+def translate(seq, init_pos=0):
+    """Translates a DNA sequence into a amino acid sequence.
+    Inital position is 0."""
+    # 切片超过索引最大值是返回 None
+    return [DNA_Codons[seq[pos: pos+3]] for pos in range(init_pos, len(seq)-2, 3)]
+
+def codon_usage(seq, aminoacid):
+    """Provides the frequency of each codon encoding a given aminoacid in a DNA sequence."""
+    tmpList = []
+    for i in range(0, len(seq)-2, 3):
+        if DNA_Codons[seq[i: i+3]] == aminoacid:
+            tmpList.append(seq[i: i+3])
+    freqDict = dict(Counter(tmpList))
+    totalWight = sum(freqDict.values())
+    for codon in tmpList:
+        freqDict[codon] = round(freqDict[codon] / totalWight, 2)
+    return freqDict
+
+def gen_read_frame(seq):
+    frames = []
+    frames.append(translate(seq, 0))
+    frames.append(translate(seq, 1))
+    frames.append(translate(seq, 2))
+    frames.append(translate(reverse_complement(seq), 0))
+    frames.append(translate(reverse_complement(seq), 1))
+    frames.append(translate(reverse_complement(seq), 2))
+    return frames
