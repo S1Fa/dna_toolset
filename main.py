@@ -1,46 +1,19 @@
-# DNA Toolset/Code testing file
-from DNAToolkit import *
-from utilities import colored
-import random
+# DNA toolset/code testing file
+from bio_seq import Bio_seq
+from utilities import read_text_file, read_fasta_file, write_text_file
 
-# Creating a random DNA sequence
-randDNAStr = ''.join([random.choice(Nucleotides) for _ in range(50)])
+test_dna = Bio_seq()
+test_dna.generate_random_seq(length=40, seq_type="RNA")
 
-dna_seq = validateSeq(randDNAStr)
+print(test_dna.get_seq_info())
+print(test_dna.nucleotide_frequency())
+print(test_dna.transcription())
+print(test_dna.reverse_complement())
+print(test_dna.gc_content())
+print(test_dna.gc_content_subsec())
+print(test_dna.translation())
+print(test_dna.codon_usage('L'))
+for rf in test_dna.gen_reading_frames():
+    print(rf)
 
-# === colorize ===
-
-# print(f'Sequence: {colored(dna_seq)}')
-# print(f'[1] + Sequence Length: {len(dna_seq)}')
-# print(colored(f'[2] + Nucleotides Frequency: {countNucFrequency(dna_seq)}'))
-
-# print(f'[3] + DNA->RNA transcription {colored(transcription(dna_seq))}')
-
-# print(f'[4] + DNA Complement:')
-# print(f"5' {colored(dna_seq)} 3'")
-# print(f"   {'|'*len(dna_seq)}")
-# print(f"3' {colored(reverse_complement(dna_seq)[::-1])} 5'")
-# === colorize ===
-
-print(f'Sequence: {dna_seq}\n')
-print(f'[1] + Sequence Length: {len(dna_seq)}')
-print(f'[2] + Nucleotides Frequency: {countNucFrequency(dna_seq)}')
-
-print(f'[3] + DNA->RNA transcription {transcription(dna_seq)}\n')
-
-print(f'[4] + DNA Complement:')
-print(f"5' {dna_seq} 3'")
-print(f"   {'|'*len(dna_seq)}")
-print(f"3' {reverse_complement(dna_seq)[::-1]} 5'")
-
-print(f'[5] + GC content: {gc_content(dna_seq)}%\n')
-
-print(f'[6] + GC content in subsection k=5: {gc_content_subsec(dna_seq, k=5)}\n')
-
-print(f'[7] + Translated amino acid sequence:\n{translate(dna_seq)}\n')
-
-print(f'[8] + Codon Frequency (L): {codon_usage(dna_seq, "L")}\n')
-
-print(f'[9] + Open reading frames:')
-for frame in gen_read_frame(dna_seq):
-    print(frame)
+print(test_dna.all_proteins_from_orfs())
